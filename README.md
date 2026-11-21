@@ -1,3 +1,4 @@
+
 # NEXUS IoT
 
 Scanner de dispositivos Bluetooth Low Energy (BLE) desenvolvido em Python.
@@ -21,3 +22,14 @@ Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Execute o scanner:
+
+```bash
+python src/nexus/main.py
+```
+
+## Status
+
+🚧 Projeto em desenvolvimento.
