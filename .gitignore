@@ -9,6 +9,9 @@ __pycache__/
 .env
 .env.*
 
+# Dados locais e histórico BLE
+data/
+
 # Arquivos do sistema
 .DS_Store
 Thumbs.db
