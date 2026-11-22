@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime
 
 from bleak import BleakScanner
+from bleak.uuids import uuidstr_to_str
 from mac_vendor_lookup import AsyncMacLookup
 from winrt.windows.devices.bluetooth import BluetoothAddressType
 
@@ -42,8 +43,37 @@ def classify_random_address(address):
     return types[address_bits]
 
 
+def classify_signal(rssi):
+    if rssi is None:
+        return "Desconhecido"
+    elif rssi >= -60:
+        return "Excelente"
+    elif rssi >= -70:
+        return "Bom"
+    elif rssi >= -85:
+        return "Fraco"
+    else:
+        return "Muito fraco"
+
+
+def identify_services(service_uuids):
+    identified = []
+
+    for uuid in service_uuids:
+        name = uuidstr_to_str(uuid)
+
+        identified.append({
+            "uuid": uuid,
+            "name": name
+        })
+
+    return identified
+
+
 def callback(device, advertisement_data):
     address = device.address
+
+    service_uuids = advertisement_data.service_uuids or []
 
     platform_data = advertisement_data.platform_data
     raw_data = platform_data[1]
@@ -68,32 +98,26 @@ def callback(device, advertisement_data):
             "last_seen": now,
             "detections": 1,
             "address_type": adv_type,
-            "random_address_type": random_type
+            "random_address_type": random_type,
+            "service_uuids": []
         }
+
     else:
         devices[address]["name"] = (
             advertisement_data.local_name
             or device.name
             or devices[address]["name"]
         )
+
         devices[address]["rssi"] = advertisement_data.rssi
         devices[address]["last_seen"] = now
         devices[address]["detections"] += 1
         devices[address]["address_type"] = adv_type
         devices[address]["random_address_type"] = random_type
 
-
-def classify_signal(rssi):
-    if rssi is None:
-        return "Desconhecido"
-    elif rssi >= -60:
-        return "Excelente"
-    elif rssi >= -70:
-        return "Bom"
-    elif rssi >= -85:
-        return "Fraco"
-    else:
-        return "Muito fraco"
+    for uuid in service_uuids:
+        if uuid not in devices[address]["service_uuids"]:
+            devices[address]["service_uuids"].append(uuid)
 
 
 def load_history():
@@ -103,6 +127,7 @@ def load_history():
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as file:
             return json.load(file)
+
     except json.JSONDecodeError:
         print("Aviso: arquivo de histórico inválido.")
         return {}
@@ -146,26 +171,46 @@ async def main():
 
         sinal = classify_signal(info["rssi"])
 
+        identified_services = identify_services(
+            info["service_uuids"]
+        )
+
         previous = history.get(address, {})
+
+        previous_uuids = previous.get("service_uuids", [])
+
+        all_uuids = list(previous_uuids)
+
+        for uuid in info["service_uuids"]:
+            if uuid not in all_uuids:
+                all_uuids.append(uuid)
 
         history[address] = {
             "name": info["name"] or previous.get("name"),
+
             "manufacturer": (
                 fabricante
                 if fabricante != "Não identificado"
                 else previous.get("manufacturer", fabricante)
             ),
+
             "address_type": info["address_type"],
+
             "random_address_type": (
                 info["random_address_type"]
                 or previous.get("random_address_type")
             ),
+
+            "service_uuids": all_uuids,
+
             "first_seen": previous.get(
                 "first_seen",
                 info["first_seen"]
             ),
+
             "last_seen": info["last_seen"],
             "last_rssi": info["rssi"],
+
             "total_detections": (
                 previous.get("total_detections", 0)
                 + info["detections"]
@@ -178,13 +223,25 @@ async def main():
 
         if info["random_address_type"]:
             print(
-                f"Subtipo de endereço: {info['random_address_type']}"
+                f"Subtipo de endereço: "
+                f"{info['random_address_type']}"
             )
 
         print(f"Fabricante: {fabricante}")
         print(f"RSSI: {info['rssi']} dBm")
         print(f"Qualidade do sinal: {sinal}")
         print(f"Anúncios nesta varredura: {info['detections']}")
+
+        if identified_services:
+            print("UUIDs anunciados:")
+
+            for service in identified_services:
+                print(f"  UUID: {service['uuid']}")
+                print(f"  Identificação: {service['name']}")
+
+        else:
+            print("UUIDs anunciados: Nenhum identificado")
+
         print("-" * 40)
 
     save_history(history)
