@@ -1,198 +1,484 @@
 # NEXUS IoT
 
-### Wireless & IoT Security Toolkit
+### Wireless & Network Security Platform
 
-**NEXUS** is an open-source Python project focused on wireless device discovery, IoT investigation, network monitoring, and security analysis.
-
-The goal is to build a modular toolkit capable of identifying wireless devices, inspecting available services, monitoring connection behavior, detecting suspicious events, and supporting authorized device management.
-
-The project combines practical experimentation, protocol analysis, and cybersecurity concepts in a single platform.
+[English](#english) | [Português](#português)
 
 ---
+
+<a name="english"></a>
+
+# 🇺🇸 English
+
+## About the Project
+
+**NEXUS** is a Python-based security platform under development, focused on wireless networks, connected devices and IoT infrastructure monitoring.
+
+Initially designed for **Small and Medium-sized Businesses (SMBs)**, NEXUS aims to provide network visibility, device discovery, anomaly detection, security assessment and authorized incident response.
+
+The project combines Python development, network protocols, wireless technologies and practical security investigation.
+
+> **Project status:** Under active development. Some capabilities described in this document are planned and have not yet been implemented.
 
 ## Project Vision
 
-NEXUS aims to become a unified environment for investigating and monitoring Wi-Fi and Bluetooth devices.
+Small and medium-sized businesses often lack visibility into the devices connected to their networks.
 
-Its long-term objectives include:
+Unknown devices, exposed services, unexpected connectivity changes and poorly monitored IoT equipment can introduce security risks.
 
-- Discovering nearby wireless devices and networks.
-- Identifying device manufacturers and technical information.
-- Inspecting Bluetooth services and characteristics.
-- Monitoring device availability and connection events.
-- Detecting unusual wireless activity and network anomalies.
-- Supporting authorized device management.
-- Generating security reports and investigation logs.
+NEXUS aims to address these challenges through a centralized platform capable of discovering devices, maintaining an asset inventory, monitoring network changes and supporting security investigations.
 
-## Current Features
+## Core Modules
 
-The following components are currently implemented:
+### 1. NEXUS Discovery
+*Network Asset Discovery & Inventory*
 
-| Module | Description | Status |
-|---|---|---|
-| BLE Scanner | Discovers nearby Bluetooth Low Energy devices. | Implemented |
-| GATT Inspector | Inspects available GATT services and characteristics. | Implemented |
-| Signal Simulator | Simulates RSSI attenuation, noise, and detection loss. | Implemented |
-| Disconnect Monitor Simulator | Simulates correlated device disconnection events. | Implemented |
-| JSON History | Stores device discovery history. | Implemented |
+Planned capabilities:
+- Discover devices on local networks.
+- Identify IP and MAC addresses.
+- Identify manufacturers when information is available.
+- Maintain a persistent device inventory.
+- Integrate Wi-Fi, Ethernet and Bluetooth discovery.
 
-## Development Roadmap
+**Business value:** Provide visibility into the devices connected to a company's infrastructure.
 
-### 1. Wireless Discovery
-- Wi-Fi network discovery.
-- Wireless access point identification.
-- Device discovery and classification.
-- Bluetooth Classic investigation.
+### 2. NEXUS Sentinel
+*Network Monitoring & Anomaly Detection*
 
-### 2. Device Intelligence
-- Manufacturer identification.
-- Protocol and service inspection.
-- Device information collection.
-- Historical device tracking.
+Planned capabilities:
+- Periodic network monitoring.
+- Detection of newly discovered devices.
+- Identification of devices that become unavailable.
+- Comparison against known device inventories.
+- Event generation and security alerts.
 
-### 3. Network Monitoring
-- Device availability monitoring.
-- Connection event tracking.
-- Signal strength analysis.
-- Anomaly detection.
+**Business value:** Identify unknown devices and unexpected network changes.
 
-### 4. Security Analysis
-- Suspicious device detection.
-- Access point identification.
-- Wireless security configuration analysis.
-- Detection of unusual connection patterns.
+### 3. NEXUS Inspector
+*Network Security Assessment*
 
-### 5. Device Management
-- Authorized device disconnection.
-- Network access management through supported administrative interfaces.
-- Device status monitoring.
-- Connection management.
+Planned capabilities:
+- Service and port discovery.
+- Protocol investigation.
+- Identification of potentially exposed services.
+- Security configuration assessment.
+- Evidence-based risk identification.
 
-### 6. Reporting & Visualization
-- Interactive dashboard.
-- Network topology visualization.
+**Business value:** Identify potential network exposure and security weaknesses.
+
+### 4. NEXUS Response
+*Authorized Device Management*
+
+Planned capabilities:
+- Router administration integrations.
+- Authorized device access management.
+- Administrative blocking requests where supported.
+- Verification of administrative actions.
+- Auditable response records.
+
+**Business value:** Support incident response through authorized administrative controls.
+
+NEXUS will not rely on wireless deauthentication attacks or radio interference to disconnect devices.
+
+### 5. NEXUS Intelligence
+*Security Events & Reporting*
+
+Planned capabilities:
+- Structured event logging.
+- Security event correlation.
+- Device risk classification.
+- Historical records.
+- Technical and executive reports.
+
+**Business value:** Transform technical information into actionable security insights.
+
+### 6. NEXUS Console
+*Security Management Dashboard*
+
+Planned capabilities:
+- Centralized device inventory.
+- Network monitoring dashboard.
 - Security alerts.
-- Investigation history.
-- Automated security reports.
+- Investigation interface.
+- User and permission management.
 
-## Technologies
-
-- Python 3.14
-- Bleak
-- Bluetooth Low Energy (BLE)
-- GATT
-- Wi-Fi networking
-- JSON
-- Git
-
-Additional libraries and tools will be introduced as development progresses.
-
-## Project Structure
-
-```text
-nexus-iot/
-│
-├── src/
-│   └── nexus/
-│       ├── main.py
-│       ├── inspect_gatt.py
-│       ├── simulate_signal.py
-│       └── simulate_disconnect_monitor.py
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
-```
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/rafaelalsilveira/nexus-iot.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd nexus-iot
-```
-
-Create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-### BLE Device Scanner
-
-```bash
-python src/nexus/main.py
-```
-
-Discovers nearby Bluetooth Low Energy devices and collects available information.
-
-### GATT Inspector
-
-```bash
-python src/nexus/inspect_gatt.py
-```
-
-Connects to a selected BLE device and inspects its available GATT services and characteristics in read-only mode.
-
-### Signal Simulation
-
-```bash
-python src/nexus/simulate_signal.py --base-rssi -55 --attenuation 20 --noise 4 --loss 15 --samples 20 --seed 7
-```
-
-Simulates wireless signal attenuation, noise, and detection loss without transmitting radio signals.
-
-### Disconnect Monitoring Simulation
-
-```bash
-python src/nexus/simulate_disconnect_monitor.py --devices 8 --background-drops 3 --bursts 2 --threshold 3 --window 2 --seed 7
-```
-
-Simulates device disconnection events and identifies correlated occurrences.
-
-## Security & Responsible Use
-
-NEXUS is designed for educational purposes, cybersecurity research, and authorized testing in controlled environments.
-
-The project focuses on wireless analysis, device monitoring, security assessment, and legitimate device management.
-
-All testing should be performed on devices and networks owned by the user or with explicit authorization.
-
-## Project Status
-
-**Under active development.**
-
-NEXUS is evolving from an initial BLE discovery tool into a broader wireless and IoT security toolkit.
-
-New modules and capabilities will be introduced progressively.
-
-## Author
-
-**Rafaela Silveira**
-
-GitHub: [@rafaelalsilveira](https://github.com/rafaelalsilveira)
+**Business value:** Provide a centralized and accessible security management experience.
 
 ---
 
-*Explore. Analyze. Understand. Secure.*
+## Current Implementations
 
+The following capabilities are already present in the codebase.
+
+### Bluetooth Low Energy (BLE)
+
+- BLE device discovery using Bleak.
+- Device name and address identification.
+- RSSI signal strength classification.
+- Manufacturer identification when available.
+- Advertisement UUID collection.
+- First and last detection tracking.
+- Detection counter.
+- Persistent JSON device history.
+
+### GATT Inspection
+
+- Inspection of BLE services.
+- Characteristic enumeration.
+- GATT structure investigation.
+
+### Offline Simulations
+
+- Signal attenuation and detection loss simulation.
+- Simulated device disconnection monitoring.
+- Artificial event generation for controlled experiments.
+
+Simulators operate offline and do not interfere with real wireless devices.
+
+---
+
+## Real-World Testing Laboratory
+
+NEXUS will be developed and validated using real equipment in a controlled home network environment.
+
+### Initial Laboratory Equipment
+
+| Equipment | Testing Objectives |
+|---|---|
+| IP Security Camera | Network discovery and service investigation |
+| Network Printer | Device identification and exposed services |
+| Windows PC | Network visibility and service assessment |
+| Second PC | Multi-device monitoring |
+| Smartphones | Wireless discovery and connectivity changes |
+| Tablet | Device discovery and network monitoring |
+
+The laboratory will support practical experiments, repeatable tests, evidence collection and technical documentation.
+
+The objective is to validate NEXUS against real devices rather than relying exclusively on simulated scenarios.
+
+---
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Core development |
+| Bleak | Bluetooth Low Energy |
+| Scapy | Planned network discovery and analysis |
+| SQLite | Planned structured persistence |
+| FastAPI | Planned backend API |
+| Pytest | Automated testing |
+| GitHub Actions | Planned CI/CD |
+| Streamlit / Web UI | Planned dashboard |
+
+Technologies listed as planned are not necessarily implemented.
+
+---
+
+## Development Roadmap
+
+- [x] Initial BLE scanner.
+- [x] BLE manufacturer identification.
+- [x] RSSI classification.
+- [x] Persistent JSON device history.
+- [x] GATT inspection.
+- [x] Offline signal simulation.
+- [x] Offline disconnection simulation.
+- [ ] Automated tests with Pytest.
+- [ ] Network device discovery.
+- [ ] Persistent network asset inventory.
+- [ ] Network monitoring and anomaly detection.
+- [ ] Structured security event logging.
+- [ ] Service and port assessment.
+- [ ] Security reporting.
+- [ ] Authorized router administration integrations.
+- [ ] Centralized security dashboard.
+- [ ] Multi-network management architecture.
+
+---
+
+## Architecture Goals
+
+NEXUS is being designed around a modular architecture with independent components for:
+
+- Device discovery.
+- Asset inventory.
+- Monitoring and detection.
+- Security assessment.
+- Incident response.
+- Event processing and reporting.
+- User interface.
+
+The initial deployment target is local installation within the monitored network, with an architecture that can evolve toward centralized multi-network management.
+
+---
+
+## Security Principles
+
+- Authorized environments only.
+- No wireless deauthentication attacks.
+- No unauthorized device disconnection.
+- Administrative actions must use supported management interfaces.
+- Security findings should include supporting evidence.
+- Monitoring and simulation must remain clearly distinguished.
+- Actions must be auditable.
+
+---
+
+## Repository Structure
+
+```text
+nexus-iot/
+├── data/
+├── docs/
+├── src/
+│   └── nexus/
+│       ├── __init__.py
+│       ├── main.py
+│       ├── inspect_gatt.py
+│       ├── simulate_disconnect_monitor.py
+│       └── simulate_signal.py
+├── tests/
+├── .gitignore
+├── README.md
+└── requirements.txt
+```
+
+---
+
+## Project Objective
+
+NEXUS is an ongoing cybersecurity engineering project focused on practical network security, wireless technologies and IoT infrastructure monitoring.
+
+The goal is to develop a functional, testable and extensible platform capable of solving real network visibility and security monitoring problems for small and medium-sized businesses.
+
+**Built with Python. Developed through real-world experimentation. Focused on practical security.**
+
+---
+
+<a name="português"></a>
+
+# 🇧🇷 Português
+
+## Sobre o Projeto
+
+**NEXUS** é uma plataforma de segurança desenvolvida em Python, voltada para redes sem fio, dispositivos conectados e monitoramento de infraestrutura IoT.
+
+Inicialmente direcionado a **pequenas e médias empresas (PMEs)**, o NEXUS tem como objetivo oferecer visibilidade da rede, descoberta de dispositivos, detecção de anomalias, avaliação de segurança e suporte à resposta autorizada a incidentes.
+
+O projeto combina desenvolvimento Python, protocolos de rede, tecnologias wireless e investigação prática em cibersegurança.
+
+> **Status do projeto:** Em desenvolvimento ativo. Algumas funcionalidades descritas neste documento estão planejadas e ainda não foram implementadas.
+
+## Visão do Projeto
+
+Pequenas e médias empresas frequentemente não possuem visibilidade suficiente sobre os dispositivos conectados às suas redes.
+
+Dispositivos desconhecidos, serviços expostos, alterações inesperadas de conectividade e equipamentos IoT sem monitoramento adequado podem representar riscos de segurança.
+
+O NEXUS busca solucionar esses problemas por meio de uma plataforma centralizada capaz de descobrir dispositivos, manter um inventário de ativos, monitorar alterações na rede e apoiar investigações de segurança.
+
+## Módulos Principais
+
+### 1. NEXUS Discovery
+*Descoberta e Inventário de Ativos de Rede*
+
+Funcionalidades planejadas:
+- Descoberta de dispositivos na rede local.
+- Identificação de endereços IP e MAC.
+- Identificação de fabricantes quando disponível.
+- Manutenção de inventário persistente de dispositivos.
+- Integração com descoberta Wi-Fi, Ethernet e Bluetooth.
+
+**Valor comercial:** oferecer visibilidade sobre os equipamentos conectados à infraestrutura da empresa.
+
+### 2. NEXUS Sentinel
+*Monitoramento de Rede e Detecção de Anomalias*
+
+Funcionalidades planejadas:
+- Monitoramento periódico da rede.
+- Detecção de novos dispositivos.
+- Identificação de dispositivos que ficam indisponíveis.
+- Comparação com inventários de dispositivos conhecidos.
+- Geração de eventos e alertas de segurança.
+
+**Valor comercial:** identificar dispositivos desconhecidos e alterações inesperadas na rede.
+
+### 3. NEXUS Inspector
+*Avaliação de Segurança da Rede*
+
+Funcionalidades planejadas:
+- Descoberta de serviços e portas.
+- Investigação de protocolos.
+- Identificação de serviços potencialmente expostos.
+- Avaliação de configurações de segurança.
+- Identificação de riscos baseada em evidências.
+
+**Valor comercial:** identificar possíveis exposições e fragilidades na infraestrutura.
+
+### 4. NEXUS Response
+*Gerenciamento Autorizado de Dispositivos*
+
+Funcionalidades planejadas:
+- Integração com administração de roteadores.
+- Gerenciamento autorizado de acesso de dispositivos.
+- Solicitação de bloqueio administrativo quando houver suporte.
+- Verificação das ações administrativas.
+- Registro auditável das respostas.
+
+**Valor comercial:** apoiar a resposta a incidentes utilizando controles administrativos autorizados.
+
+O NEXUS não utilizará ataques de desautenticação wireless ou interferência de rádio para desconectar dispositivos.
+
+### 5. NEXUS Intelligence
+*Eventos de Segurança e Relatórios*
+
+Funcionalidades planejadas:
+- Registro estruturado de eventos.
+- Correlação de eventos de segurança.
+- Classificação de risco dos dispositivos.
+- Histórico de ocorrências.
+- Relatórios técnicos e executivos.
+
+**Valor comercial:** transformar informações técnicas em indicadores úteis para decisões de segurança.
+
+### 6. NEXUS Console
+*Painel de Gerenciamento de Segurança*
+
+Funcionalidades planejadas:
+- Inventário centralizado de dispositivos.
+- Dashboard de monitoramento.
+- Alertas de segurança.
+- Interface de investigação.
+- Gerenciamento de usuários e permissões.
+
+**Valor comercial:** oferecer uma experiência centralizada e acessível para gerenciamento da segurança.
+
+---
+
+## Funcionalidades Implementadas
+
+As seguintes funcionalidades já estão presentes no código do projeto.
+
+### Bluetooth Low Energy (BLE)
+
+- Descoberta de dispositivos BLE utilizando Bleak.
+- Identificação de nomes e endereços de dispositivos.
+- Classificação da intensidade do sinal RSSI.
+- Identificação de fabricantes quando disponível.
+- Coleta de UUIDs anunciados.
+- Registro da primeira e última detecção.
+- Contagem de detecções.
+- Histórico persistente de dispositivos em JSON.
+
+### Inspeção GATT
+
+- Inspeção de serviços BLE.
+- Enumeração de características.
+- Investigação da estrutura GATT.
+
+### Simulações Offline
+
+- Simulação de atenuação de sinal e perda de detecção.
+- Simulação de monitoramento de desconexões.
+- Geração artificial de eventos para experimentos controlados.
+
+Os simuladores operam offline e não interferem em dispositivos wireless reais.
+
+---
+
+## Laboratório de Testes em Ambiente Real
+
+O NEXUS será desenvolvido e validado utilizando equipamentos reais em um ambiente de rede doméstico controlado.
+
+### Equipamentos Iniciais do Laboratório
+
+| Equipamento | Objetivos dos testes |
+|---|---|
+| Câmera de segurança IP | Descoberta de rede e investigação de serviços |
+| Impressora de rede | Identificação de dispositivos e serviços expostos |
+| PC com Windows | Visibilidade de rede e avaliação de serviços |
+| Segundo PC | Monitoramento de múltiplos dispositivos |
+| Smartphones | Descoberta wireless e alterações de conectividade |
+| Tablet | Descoberta de dispositivos e monitoramento de rede |
+
+O laboratório permitirá realizar experimentos práticos, testes reproduzíveis, coleta de evidências e documentação técnica.
+
+O objetivo é validar o NEXUS com dispositivos reais, em vez de depender exclusivamente de cenários simulados.
+
+---
+
+## Tecnologias
+
+| Tecnologia | Aplicação |
+|---|---|
+| Python | Desenvolvimento principal |
+| Bleak | Bluetooth Low Energy |
+| Scapy | Descoberta e análise de rede planejadas |
+| SQLite | Persistência estruturada planejada |
+| FastAPI | API backend planejada |
+| Pytest | Testes automatizados |
+| GitHub Actions | CI/CD planejado |
+| Streamlit / Web UI | Dashboard planejado |
+
+As tecnologias indicadas como planejadas ainda não necessariamente estão implementadas.
+
+---
+
+## Roadmap de Desenvolvimento
+
+- [x] Scanner BLE inicial.
+- [x] Identificação de fabricantes BLE.
+- [x] Classificação RSSI.
+- [x] Histórico persistente de dispositivos em JSON.
+- [x] Inspeção GATT.
+- [x] Simulação offline de sinal.
+- [x] Simulação offline de desconexões.
+- [ ] Testes automatizados com Pytest.
+- [ ] Descoberta de dispositivos na rede.
+- [ ] Inventário persistente de ativos de rede.
+- [ ] Monitoramento de rede e detecção de anomalias.
+- [ ] Registro estruturado de eventos de segurança.
+- [ ] Avaliação de serviços e portas.
+- [ ] Relatórios de segurança.
+- [ ] Integrações autorizadas com administração de roteadores.
+- [ ] Dashboard centralizado de segurança.
+- [ ] Arquitetura para gerenciamento de múltiplas redes.
+
+---
+
+## Objetivos de Arquitetura
+
+O NEXUS está sendo projetado com uma arquitetura modular, composta por componentes independentes para:
+
+- Descoberta de dispositivos.
+- Inventário de ativos.
+- Monitoramento e detecção.
+- Avaliação de segurança.
+- Resposta a incidentes.
+- Processamento de eventos e relatórios.
+- Interface de usuário.
+
+O objetivo inicial é permitir a instalação local na rede monitorada, mantendo uma arquitetura que possa evoluir futuramente para o gerenciamento centralizado de múltiplas redes.
+
+---
+
+## Princípios de Segurança
+
+- Utilização somente em ambientes autorizados.
+- Nenhum ataque de desautenticação wireless.
+- Nenhuma desconexão não autorizada de dispositivos.
+- Ações administrativas devem utilizar interfaces de gerenciamento suportadas.
+- Descobertas de segurança devem apresentar evidências.
+- Monitoramento e simulação devem permanecer claramente diferenciados.
+- Todas as ações administrativas devem ser auditáveis.
+
+---
+
+## Objetivo do Projeto
+
+O NEXUS é um projeto contínuo de engenharia em cibersegurança, com foco em segurança prática de redes, tecnologias wireless e monitoramento de infraestrutura IoT.
+
+O objetivo é desenvolver uma plataforma funcional, testável e extensível, capaz de solucionar problemas reais de visibilidade e monitoramento de segurança em pequenas e médias empresas.
+
+**Desenvolvido em Python. Validado com experimentos reais. Focado em segurança prática.**
